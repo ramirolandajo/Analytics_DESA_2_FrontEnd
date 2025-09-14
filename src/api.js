@@ -2,7 +2,7 @@ const API_BASE =
   (import.meta.env.VITE_API_URL?.trim()) || "/api";
 
 // Your Analytics controller base is '/analytics/sales'
-const ANALYTICS_BASE = `${API_BASE}/analytics/`;
+const ANALYTICS_BASE = `${API_BASE}/analytics`;
 
 // Products controller base (adjust if different in your BE)
 const PRODUCTS_BASE  = `${API_BASE}/products`;
