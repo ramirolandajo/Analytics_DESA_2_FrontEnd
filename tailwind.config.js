@@ -1,13 +1,26 @@
-/** @type {import('tailwindcss').Config} */
+/**
+ * Tailwind configuration for the analytics dashboard.
+ * Includes custom corporate palette and dark mode support.
+ */
 export default {
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ['index.html', './src/**/*.{js,jsx}'],
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        slate: {
+          950: '#0f172a'
+        },
+        brand: {
+          primary: '#1e293b',
+          accent: '#3b82f6',
+          soft: '#f8fafc'
+        }
+      },
       boxShadow: {
-        card: '0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.1)'
+        soft: '0 10px 30px -12px rgba(15, 23, 42, 0.35)'
       }
-    },
+    }
   },
-  plugins: [],
-}
+  plugins: [require('@tailwindcss/forms')]
+};
