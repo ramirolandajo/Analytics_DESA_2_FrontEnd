@@ -61,7 +61,7 @@ jobs:
 
       - name: Invalidate CloudFront (/, /index.html)
         env:
-          CF_DIST_ID: EYDOTNA0N1RR2
+          CF_DIST_ID: EYD0TNA0N1RR2
         run: |
           aws cloudfront create-invalidation \
             --distribution-id "$CF_DIST_ID" \
