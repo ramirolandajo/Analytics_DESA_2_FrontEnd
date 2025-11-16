@@ -10,7 +10,8 @@ const currencyFormatter = new Intl.NumberFormat('es-AR', {
   style: 'currency',
   currency: 'ARS',
   minimumFractionDigits: 2,
-  maximumFractionDigits: 2
+  maximumFractionDigits: 2,
+  currencyDisplay: 'narrowSymbol'
 });
 
 const numberFormatter = new Intl.NumberFormat('es-AR', {

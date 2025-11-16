@@ -22,7 +22,7 @@ const KPIcard = ({ label, value, delta, deltaLabel, icon: Icon, isCurrency, href
           <p className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
             {label}
           </p>
-          <p className="mt-3 text-3xl font-semibold text-brand-primary dark:text-brand-soft">
+          <p className="mt-3 whitespace-nowrap text-3xl font-semibold text-brand-primary dark:text-brand-soft">
             {isCurrency ? formatCurrency(value) : formatNumber(value)}
           </p>
         </div>
