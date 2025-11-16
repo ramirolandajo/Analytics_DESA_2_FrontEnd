@@ -155,7 +155,7 @@ const ProductosPage = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="brand" tick={{ fontSize: 12 }} />
                 <YAxis tickFormatter={(value) => formatNumber(value)} width={100} />
-                <Tooltip formatter={(value, name) => [`Cantidad vendida: ${formatCurrency(value)}`, `Marca: ${name}`]} />
+                <Tooltip formatter={(value, name) => [`Cantidad vendida: ${formatNumber(value)}`, `Marca: ${name}`]} />
                 <Bar dataKey="cantidadVendida" fill="#1e293b" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
