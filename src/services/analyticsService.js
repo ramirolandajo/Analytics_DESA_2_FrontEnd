@@ -44,6 +44,8 @@ export const getProductEventsTimeline = () =>
 export const getProducts = () => apiClient.get('/products');
 export const getProduct = (id) => apiClient.get(`/products/${id}`).then((res) => res.data);
 export const getProductByCode = (productCode) => apiClient.get(`/products/by-code/${productCode}`).then((res) => res.data);
+export const getProductViewsTop = (params) => apiClient.get('/api/product-views/daily/top', { params }).then((res) => res.data);
+export const getProductViewsBottom = (params) => apiClient.get('/api/product-views/daily/bottom', { params }).then((res) => res.data);
 
 // Optional aggregated endpoints that could simplify the frontend.
 // TODO: Implement endpoint /analytics/sales/overview-summary to aggregate KPIs and deltas in una sola llamada.
