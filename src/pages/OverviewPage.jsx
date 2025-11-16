@@ -77,8 +77,8 @@ const OverviewPage = () => {
         value: currentRevenue,
         delta: computeDelta(),
         deltaLabel: 'vs período anterior',
-        type: 'currency',
-        href: '/overview'
+        type: 'currency'
+        // href removed so "Ver más" doesn't appear on the home KPIs
       },
       {
         label: 'Ventas confirmadas',
@@ -106,8 +106,8 @@ const OverviewPage = () => {
         value: averageTicket,
         delta: computeDelta(),
         deltaLabel: 'Promedio por orden',
-        type: 'currency',
-        href: '/overview'
+        type: 'currency'
+        // href removed so "Ver más" doesn't appear on the home KPIs
       }
     ];
   }, [summaryQuery.data]);
@@ -145,29 +145,18 @@ const OverviewPage = () => {
           Indicadores clave del desempeño comercial del período actual.
         </p>
         <div className="mt-6 grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-stretch">
-          {
-            // Ensure a fixed 2x3 grid (up to 6 slots). Fill with null placeholders so layout doesn't collapse when <6 metrics.
-          }
-          {(() => {
-            const displayMetrics = summaryMetrics.slice(0, 6);
-            while (displayMetrics.length < 6) displayMetrics.push(null);
-            return displayMetrics.map((metric, index) => (
-              metric ? (
-                <KPIcard
-                  key={metric.label}
-                  label={metric.label}
-                  value={metric.value}
-                  delta={metric.delta}
-                  deltaLabel={metric.deltaLabel}
-                  icon={kpiIcons[index] || kpiIcons[0]}
-                  isCurrency={metric.type === 'currency'}
-                  href={metric.href}
-                />
-              ) : (
-                <div key={`placeholder-${index}`} className="invisible card-shadow rounded-2xl p-6" />
-              )
-            ));
-          })()}
+          {summaryMetrics.slice(0, 6).map((metric, index) => (
+            <KPIcard
+              key={metric.label}
+              label={metric.label}
+              value={metric.value}
+              delta={metric.delta}
+              deltaLabel={metric.deltaLabel}
+              icon={kpiIcons[index] || kpiIcons[0]}
+              isCurrency={metric.type === 'currency'}
+              href={metric.href}
+            />
+          ))}
         </div>
       </section>
 
@@ -195,8 +184,7 @@ const OverviewPage = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="period" tick={{ fontSize: 12 }} stroke="#94a3b8" />
-                <YAxis tickFormatter={(value) => formatCurrencyShort(value)} width={120} stroke="#94a3b8" tick={{ fontSize: 12 }} />
+                <XAxis dataKey="period" tick={{ fontSize: 12 }} stroke="#94a3b8" /> <YAxis tickFormatter={(value) => formatCurrencyShort(value)} width={120} stroke="#94a3b8" tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(value) => formatCurrencyShort(value)} labelFormatter={(label) => `Período: ${label}`} />
                 <Area type="monotone" dataKey="revenue" stroke="#3b82f6" fill="url(#colorRevenue)" strokeWidth={3} />
               </AreaChart>
@@ -207,7 +195,6 @@ const OverviewPage = () => {
         <ChartCard
           title="Pulso diario"
           description="Ingresos y tickets promedio por día."
-          action={<Link to="/overview">Actualizar filtros</Link>}
         >
           <div className="h-72 min-w-[320px]">
             <ResponsiveContainer width="100%" height="100%">
