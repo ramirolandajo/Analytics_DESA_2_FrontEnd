@@ -4,7 +4,8 @@ import { ExternalLink } from 'lucide-react';
 import {
   getTopBrands,
   getTopCategories,
-  getTopProducts
+  getTopProducts,
+  getSalesCorrelation
 } from '../services/analyticsService.js';
 import { usePeriod } from '../contexts/PeriodContext.jsx';
 import ChartCard from '../components/ChartCard.jsx';
@@ -36,10 +37,12 @@ const ProductosPage = () => {
   const topProductsQuery = useQuery({ queryKey: ['top-products', params.startDate, params.endDate], queryFn: () => getTopProducts(params) });
   const topCategoriesQuery = useQuery({ queryKey: ['top-categories', params.startDate, params.endDate], queryFn: () => getTopCategories(params) });
   const topBrandsQuery = useQuery({ queryKey: ['top-brands', params.startDate, params.endDate], queryFn: () => getTopBrands(params) });
+  const salesCorrelationQuery = useQuery({ queryKey: ['sales-correlation'], queryFn: () => getSalesCorrelation() });
 
   const topProducts = Array.isArray(topProductsQuery.data) ? topProductsQuery.data : [];
   const topCategories = Array.isArray(topCategoriesQuery.data) ? topCategoriesQuery.data : [];
   const topBrands = Array.isArray(topBrandsQuery.data) ? topBrandsQuery.data : [];
+  const salesCorrelationData = Array.isArray(salesCorrelationQuery.data) ? salesCorrelationQuery.data : [];
 
 
   // Map topProducts to expected format
@@ -50,17 +53,18 @@ const ProductosPage = () => {
     name: (p.title || p.productId.toString()).length > 15 ? (p.title || p.productId.toString()).substring(0, 15) + '...' : (p.title || p.productId.toString())
   }));
 
-  if ([topProductsQuery, topCategoriesQuery, topBrandsQuery].some((query) => query.isLoading)) {
+  if ([topProductsQuery, topCategoriesQuery, topBrandsQuery, salesCorrelationQuery].some((query) => query.isLoading)) {
     return <Loader />;
   }
 
-  if ([topProductsQuery, topCategoriesQuery, topBrandsQuery].some((query) => query.isError)) {
+  if ([topProductsQuery, topCategoriesQuery, topBrandsQuery, salesCorrelationQuery].some((query) => query.isError)) {
     return (
       <ErrorMessage
         onRetry={() => {
           topProductsQuery.refetch();
           topCategoriesQuery.refetch();
           topBrandsQuery.refetch();
+          salesCorrelationQuery.refetch();
         }}
       />
     );
@@ -144,10 +148,53 @@ const ProductosPage = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="brand" tick={{ fontSize: 12 }} />
                 <YAxis tickFormatter={(value) => formatNumber(value)} width={100} />
-                <Tooltip formatter={(value, name) => [`Cantidad vendida: ${formatNumber(value)}`, `Marca: ${name}`]} />
+                <Tooltip formatter={(value, name) => [`Cantidad vendida: ${formatCurrency(value)}`, `Marca: ${name}`]} />
                 <Bar dataKey="cantidadVendida" fill="#1e293b" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </ChartCard>
+
+        <ChartCard
+          title="Productos más vendidos"
+          description="Top productos por unidades vendidas."
+        >
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+              <thead className="bg-brand-soft/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+                <tr>
+                  <th className="px-6 py-3">Producto</th>
+                  <th className="px-6 py-3">Precio</th>
+                  <th className="px-6 py-3">Unidades vendidas</th>
+                  <th className="px-6 py-3">Acción</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                {salesCorrelationData.map((product) => (
+                  <tr key={product.productId}>
+                    <td className="px-6 py-4 font-semibold">{product.title}</td>
+                    <td className="px-6 py-4">{formatCurrency(product.price)}</td>
+                    <td className="px-6 py-4">{formatNumber(product.unitsSold)}</td>
+                    <td className="px-6 py-4">
+                      <a
+                        href={`/productos/${product.productCode}`}
+                        className="inline-flex items-center gap-1 text-brand-accent hover:text-brand-primary"
+                      >
+                        Ver ficha
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+                {salesCorrelationData.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-10 text-center text-sm text-slate-500">
+                      No hay productos vendidos registrados.
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
           </div>
         </ChartCard>
       </div>
