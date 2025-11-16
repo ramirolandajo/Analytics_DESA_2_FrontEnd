@@ -5,9 +5,7 @@ import {
   getTopBrands,
   getTopCategories,
   getTopProducts,
-  getSalesCorrelation,
-  getProductViewsTop,
-  getProductViewsBottom
+  getSalesCorrelation
 } from '../services/analyticsService.js';
 import { usePeriod } from '../contexts/PeriodContext.jsx';
 import ChartCard from '../components/ChartCard.jsx';
@@ -40,15 +38,11 @@ const ProductosPage = () => {
   const topCategoriesQuery = useQuery({ queryKey: ['top-categories', params.startDate, params.endDate], queryFn: () => getTopCategories(params) });
   const topBrandsQuery = useQuery({ queryKey: ['top-brands', params.startDate, params.endDate], queryFn: () => getTopBrands(params) });
   const salesCorrelationQuery = useQuery({ queryKey: ['sales-correlation'], queryFn: () => getSalesCorrelation() });
-  const topViewsQuery = useQuery({ queryKey: ['product-views-top', params.startDate, params.endDate], queryFn: () => getProductViewsTop(params) });
-  const bottomViewsQuery = useQuery({ queryKey: ['product-views-bottom', params.startDate, params.endDate], queryFn: () => getProductViewsBottom(params) });
 
   const topProducts = Array.isArray(topProductsQuery.data) ? topProductsQuery.data : [];
   const topCategories = Array.isArray(topCategoriesQuery.data) ? topCategoriesQuery.data : [];
   const topBrands = Array.isArray(topBrandsQuery.data) ? topBrandsQuery.data : [];
   const salesCorrelationData = Array.isArray(salesCorrelationQuery.data) ? salesCorrelationQuery.data : [];
-  const topViews = Array.isArray(topViewsQuery.data) ? topViewsQuery.data : [];
-  const bottomViews = Array.isArray(bottomViewsQuery.data) ? bottomViewsQuery.data : [];
 
   const sortedSalesData = [...salesCorrelationData].sort((a, b) => b.unitsSold - a.unitsSold);
 
@@ -101,7 +95,7 @@ const ProductosPage = () => {
                 />
                 <YAxis tickFormatter={(value) => formatNumber(value)} />
                 <Tooltip
-                  formatter={(value, _, payload) => [`Cantidad vendida: ${formatNumber(value)}`, `Producto: ${payload.payload.productName || payload.payload.productCode}`]}
+                  formatter={(value, _, payload) => [`Cantidad vendida: ${formatNumber(value)}`, payload?.payload?.brand || 'Marca']}
                   contentStyle={{ borderRadius: 12 }}
                 />
                 <Bar dataKey="revenue" fill="#3b82f6" radius={[8, 8, 0, 0]}>
