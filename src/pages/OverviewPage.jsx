@@ -22,7 +22,7 @@ import AlertBanner from '../components/AlertBanner.jsx';
 import Loader from '../components/Loader.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import { evaluateLowStockAlert, evaluateRevenueAlert } from '../services/utils/alertLogic.js';
-import { formatCurrency, formatDate } from '../services/utils/formatters.js';
+import { formatCurrency, formatCurrencyShort, formatDate } from '../services/utils/formatters.js';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -196,8 +196,8 @@ const OverviewPage = () => {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="period" tick={{ fontSize: 12 }} stroke="#94a3b8" />
-                <YAxis tickFormatter={(value) => formatCurrency(value)} width={120} stroke="#94a3b8" />
-                <Tooltip formatter={(value) => formatCurrency(value)} labelFormatter={(label) => `Período: ${label}`} />
+                <YAxis tickFormatter={(value) => formatCurrencyShort(value)} width={120} stroke="#94a3b8" tick={{ fontSize: 12 }} />
+                <Tooltip formatter={(value) => formatCurrencyShort(value)} labelFormatter={(label) => `Período: ${label}`} />
                 <Area type="monotone" dataKey="revenue" stroke="#3b82f6" fill="url(#colorRevenue)" strokeWidth={3} />
               </AreaChart>
             </ResponsiveContainer>
@@ -214,7 +214,7 @@ const OverviewPage = () => {
               <LineChart data={Array.isArray(dailyData) ? dailyData : []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="date" tickFormatter={(value) => formatDate(value)} stroke="#94a3b8" />
-                <YAxis yAxisId="left" tickFormatter={(value) => formatCurrency(value)} stroke="#3b82f6" width={110} />
+                <YAxis yAxisId="left" tickFormatter={(value) => formatCurrencyShort(value)} stroke="#3b82f6" width={110} />
                 <YAxis yAxisId="right" orientation="right" tickFormatter={(value) => `${value}` } stroke="#1e293b" width={80} />
                 <Tooltip
                   formatter={(value, name) => [
