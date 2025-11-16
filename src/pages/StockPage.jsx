@@ -101,13 +101,7 @@ const StockPage = () => {
                     className={isCritical ? 'bg-red-50/60 text-red-700 dark:bg-red-950/30 dark:text-red-200' : ''}
                   >
                     <td className="px-6 py-4 text-sm font-semibold">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedProduct(item.productCode)}
-                        className="text-left text-brand-accent hover:underline"
-                      >
-                        {item.title || item.productCode}
-                      </button>
+                      {item.title || item.productCode}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium">
                       <div className="flex items-center gap-2">
