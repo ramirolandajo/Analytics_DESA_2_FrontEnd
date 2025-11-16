@@ -144,19 +144,30 @@ const OverviewPage = () => {
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           Indicadores clave del desempeño comercial del período actual.
         </p>
-        <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
-          {summaryMetrics.map((metric, index) => (
-            <KPIcard
-              key={metric.label}
-              label={metric.label}
-              value={metric.value}
-              delta={metric.delta}
-              deltaLabel={metric.deltaLabel}
-              icon={kpiIcons[index] || kpiIcons[0]}
-              isCurrency={metric.type === 'currency'}
-              href={metric.href}
-            />
-          ))}
+        <div className="mt-6 grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 items-stretch">
+          {
+            // Ensure a fixed 2x3 grid (up to 6 slots). Fill with null placeholders so layout doesn't collapse when <6 metrics.
+          }
+          {(() => {
+            const displayMetrics = summaryMetrics.slice(0, 6);
+            while (displayMetrics.length < 6) displayMetrics.push(null);
+            return displayMetrics.map((metric, index) => (
+              metric ? (
+                <KPIcard
+                  key={metric.label}
+                  label={metric.label}
+                  value={metric.value}
+                  delta={metric.delta}
+                  deltaLabel={metric.deltaLabel}
+                  icon={kpiIcons[index] || kpiIcons[0]}
+                  isCurrency={metric.type === 'currency'}
+                  href={metric.href}
+                />
+              ) : (
+                <div key={`placeholder-${index}`} className="invisible card-shadow rounded-2xl p-6" />
+              )
+            ));
+          })()}
         </div>
       </section>
 
