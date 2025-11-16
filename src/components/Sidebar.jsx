@@ -10,7 +10,6 @@ const navItems = [
   { to: '/stock', label: 'Stock', icon: Boxes },
   { to: '/productos', label: 'Productos', icon: ShoppingBag },
   { to: '/clientes', label: 'Clientes', icon: Users },
-  { to: '/eventos', label: 'Eventos', icon: Activity },
   { to: '/ai-chat', label: 'Chat IA', icon: Bot },
 ];
 
