@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-/**
- * Axios instance configured for the analytics module.
- * The backend base URL is expected from VITE_API_BASE_URL environment variable.
- */
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   headers: {

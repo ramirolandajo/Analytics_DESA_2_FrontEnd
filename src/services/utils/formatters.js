@@ -9,7 +9,8 @@ export const cn = (...inputs) => twMerge(clsx(inputs));
 const currencyFormatter = new Intl.NumberFormat('es-AR', {
   style: 'currency',
   currency: 'ARS',
-  maximumFractionDigits: 0
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
 
 const numberFormatter = new Intl.NumberFormat('es-AR', {
