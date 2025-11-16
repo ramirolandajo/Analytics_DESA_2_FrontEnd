@@ -15,14 +15,14 @@ const KPIcard = ({ label, value, delta, deltaLabel, icon: Icon, isCurrency, href
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="card-shadow rounded-2xl bg-white p-6 dark:bg-slate-900"
+      className="card-shadow rounded-2xl bg-white p-6 dark:bg-slate-900 overflow-hidden"
     >
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
             {label}
           </p>
-          <p className="mt-3 whitespace-nowrap text-3xl font-semibold text-brand-primary dark:text-brand-soft">
+          <p className="mt-3 truncate text-3xl font-semibold text-brand-primary dark:text-brand-soft">
             {isCurrency ? formatCurrency(value) : formatNumber(value)}
           </p>
         </div>
