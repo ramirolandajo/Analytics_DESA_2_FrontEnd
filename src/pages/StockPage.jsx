@@ -47,12 +47,12 @@ const StockPage = () => {
 
   const lowStockAlert = useMemo(() => evaluateLowStockAlert(lowStockQuery.data), [lowStockQuery.data]);
 
-  if (lowStockQuery.isLoading || productsQuery.isLoading || stockHistoryByProductQuery.isLoading) {
+  if (lowStockQuery.isLoading || productsQuery.isLoading) {
     return <Loader />;
   }
 
-  if (lowStockQuery.isError || productsQuery.isError || stockHistoryByProductQuery.isError) {
-    return <ErrorMessage onRetry={() => { lowStockQuery.refetch(); productsQuery.refetch(); stockHistoryByProductQuery.refetch(); }} />;
+  if (lowStockQuery.isError || productsQuery.isError) {
+    return <ErrorMessage onRetry={() => { lowStockQuery.refetch(); productsQuery.refetch(); }} />;
   }
 
   const lowStockList = Array.isArray(lowStockQuery.data) ? lowStockQuery.data : [];
@@ -159,6 +159,10 @@ const StockPage = () => {
           {selectedProduct ? (
             stockHistoryByProductQuery.isLoading ? (
               <Loader />
+            ) : stockHistoryByProductQuery.isError ? (
+              <div className="flex h-full items-center justify-center text-sm text-red-500">
+                Error al cargar el historial. <button onClick={() => stockHistoryByProductQuery.refetch()} className="underline">Reintentar</button>
+              </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={selectedHistory}>
