@@ -22,7 +22,8 @@ export const formatCurrency = (value) => {
   if (value === null || value === undefined || Number.isNaN(Number(value))) {
     return '-';
   }
-  return currencyFormatter.format(Number(value));
+  // Keep the localized currency (narrow symbol like $) and append the ISO code for clarity (ARS)
+  return `${currencyFormatter.format(Number(value))} ARS`;
 };
 
 export const formatNumber = (value) => {
