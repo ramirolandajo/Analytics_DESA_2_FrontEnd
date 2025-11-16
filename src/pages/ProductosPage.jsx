@@ -44,6 +44,7 @@ const ProductosPage = () => {
   const topBrands = Array.isArray(topBrandsQuery.data) ? topBrandsQuery.data : [];
   const salesCorrelationData = Array.isArray(salesCorrelationQuery.data) ? salesCorrelationQuery.data : [];
 
+  const sortedSalesData = [...salesCorrelationData].sort((a, b) => b.unitsSold - a.unitsSold);
 
   // Map topProducts to expected format
   const mappedTopProducts = topProducts.map(p => ({
@@ -170,7 +171,7 @@ const ProductosPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-                {salesCorrelationData.map((product) => (
+                {sortedSalesData.map((product) => (
                   <tr key={product.productId}>
                     <td className="px-6 py-4 font-semibold">{product.title}</td>
                     <td className="px-6 py-4">{formatCurrency(product.price)}</td>
@@ -186,7 +187,7 @@ const ProductosPage = () => {
                     </td>
                   </tr>
                 ))}
-                {salesCorrelationData.length === 0 ? (
+                {sortedSalesData.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="px-6 py-10 text-center text-sm text-slate-500">
                       No hay productos vendidos registrados.
