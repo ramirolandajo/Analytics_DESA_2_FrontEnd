@@ -27,7 +27,7 @@ const KPIcard = ({ label, value, delta, deltaLabel, icon: Icon, isCurrency, href
           </p>
         </div>
         {Icon ? (
-          <div className="rounded-full bg-brand-accent/10 p-3 text-brand-accent">
+          <div className="flex-shrink-0 rounded-full bg-brand-accent/10 p-3 text-brand-accent">
             <Icon className="h-6 w-6" />
           </div>
         ) : null}
