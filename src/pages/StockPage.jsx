@@ -61,6 +61,7 @@ const StockPage = () => {
     ? stockHistoryByProductQuery.data.data
     : [];
 
+  const sortedLowStock = [...lowStockList].sort((a, b) => a.stock - b.stock);
 
   const selectedProductName = productsList.find(p => p.productCode === selectedProduct)?.title || selectedProduct;
 
@@ -79,7 +80,7 @@ const StockPage = () => {
         <div className="border-b border-slate-200 px-6 py-4 dark:border-slate-800">
           <h3 className="text-lg font-semibold text-brand-primary dark:text-brand-soft">Productos con bajo stock</h3>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Los productos con 5 unidades o menos requieren reposición prioritaria.
+            Los productos con 10 unidades o menos requieren reposición prioritaria.
           </p>
         </div>
         <div className="overflow-x-auto">
@@ -92,7 +93,7 @@ const StockPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {lowStockList.map((item) => {
+              {sortedLowStock.map((item) => {
                 const isCritical = Number(item.stock) < 3;
                 return (
                   <tr
@@ -125,7 +126,7 @@ const StockPage = () => {
                   </tr>
                 );
               })}
-              {lowStockList.length === 0 ? (
+              {sortedLowStock.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="px-6 py-10 text-center text-sm text-slate-500">
                     No hay productos con stock crítico en este momento.
@@ -192,7 +193,7 @@ const StockPage = () => {
       >
         <div className="h-80 min-w-[320px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={lowStockList.map(item => ({
+            <BarChart data={sortedLowStock.map(item => ({
               name: (item.title || item.productCode).length > 15 ? (item.title || item.productCode).substring(0, 15) + '...' : (item.title || item.productCode),
               stock: item.stock,
               productCode: item.productCode
@@ -205,7 +206,7 @@ const StockPage = () => {
                 labelFormatter={(label) => `Producto: ${label}`}
               />
               <Bar dataKey="stock" fill="#ef4444" radius={[8, 8, 0, 0]}>
-                {lowStockList.map((entry, index) => (
+                {sortedLowStock.map((entry) => (
                   <Cell key={entry.productCode} fill={Number(entry.stock) < 3 ? '#dc2626' : '#f87171'} />
                 ))}
               </Bar>
