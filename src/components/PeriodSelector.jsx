@@ -17,6 +17,17 @@ const PeriodSelector = () => {
   const selected30 = useMemo(() => isPreset(30), [startYMD, endYMD]);
   const selected90 = useMemo(() => isPreset(90), [startYMD, endYMD]);
 
+  // compute today's YMD in local timezone (same format as PeriodContext.formatYMD)
+  const todayYMD = useMemo(() => {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }, []);
+
+  const selectedToday = useMemo(() => startYMD === todayYMD && endYMD === todayYMD, [startYMD, endYMD, todayYMD]);
+
   const btnBase = 'cursor-pointer rounded-md px-3 py-1 text-xs font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-brand-accent';
 
   return (
@@ -40,6 +51,14 @@ const PeriodSelector = () => {
         />
       </div>
       <div className="mt-2 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => { setStartYMD(todayYMD); setEndYMD(todayYMD); }}
+          className={`${btnBase} ${selectedToday ? 'bg-brand-accent text-white border border-transparent' : 'bg-white border border-slate-200 text-slate-700 dark:bg-slate-700 dark:border-slate-700 dark:text-slate-300'}`}
+          aria-pressed={selectedToday}
+        >
+          Hoy
+        </button>
         <button
           type="button"
           onClick={() => setPresetLastDays(7)}
